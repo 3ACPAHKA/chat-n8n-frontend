@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Chat (chat.mup.me)</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <main class="app">
+    <header class="app-header">
+      <h1>Chat <span class="domain">(chat.mup.me)</span></h1>
+      <div class="header-controls">
+        <button id="themeToggle" class="btn small" aria-pressed="false">
+          <span id="themeIcon" aria-hidden="true">🌕</span>
+          <span id="themeLabel">Светлая</span>
+        </button>
+        <button id="set-secret-btn" class="btn small">Установить секрет</button>
+        <a class="link" target="_blank" href="README.md">README</a>
+      </div>
+    </header>
+
+    <section class="chat-panel" aria-live="polite">
+      <ul id="messages" class="messages" role="log" aria-atomic="false"></ul>
+
+      <div id="typing" class="typing" aria-hidden="true">
+        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      </div>
+
+      <form id="composer" class="composer" autocomplete="off" aria-label="Message composer">
+        <input id="input" class="input" type="text" placeholder="Введите сообщение" aria-label="Введите сообщение" />
+        <button id="send" class="btn primary" type="submit">Отправить</button>
+      </form>
+    </section>
+  </main>
+
+  <!-- Secret modal (simple) -->
+  <div id="secret-modal" class="modal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal-content">
+      <h2>Установить секрет</h2>
+      <p>Вставьте токен (только сам токен, без префикса "Bearer ").</p>
+      <input id="secret-input" class="input" type="text" placeholder="my-secret-token" />
+      <div class="modal-actions">
+        <button id="save-secret" class="btn primary">Сохранить</button>
+        <button id="cancel-secret" class="btn">Отмена</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="./chat.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "name": "chat-client",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "npx serve public --listen 3000",
+    "start": "npx serve public --listen 3000"
+  },
+  "engines": {
+    "node": ">=14"
+  }
+}

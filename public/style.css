@@ -1,0 +1,173 @@
+:root{
+	/* Light theme (defaults) */
+	--bg: #F2F3F5;
+	--card-bg: #ffffff;
+	--text: #1a1a1a;
+	--input-bg: #ffffff;
+	--input-border: #d0d0d0;
+	--msg-me: #2563eb;
+	--msg-bot: #e5e7eb;
+
+	/* legacy / helper variables (kept for compatibility) */
+	--muted:#7b8a99;
+	--accent:#2563eb;
+	--accent-2:#0ea5a8;
+	--radius:12px;
+	--shadow: 0 6px 18px rgba(28,41,68,0.06);
+	font-family: Inter, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+.dark{
+	--bg: #3A3E47;
+	--card-bg: #4A4F59;
+	--text: #ffffff;
+	--input-bg: #5A5F69;
+	--input-border: #6A6F79;
+	--msg-me: #3b82f6;
+	--msg-bot: #6b7280;
+}
+*{box-sizing:border-box}
+html,body,#app{height:100%}
+body{
+	margin:0;
+	background:var(--bg);
+	color:var(--text);
+	-webkit-font-smoothing:antialiased;
+	-moz-osx-font-smoothing:grayscale;
+	min-height:100vh;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	padding:28px;
+	transition:background .18s ease, color .18s ease;
+}
+
+/* App wrapper */
+.app{
+	width:900px;
+	max-width:96vw;
+	background:transparent;
+	display:flex;
+	flex-direction:column;
+	gap:12px;
+}
+
+/* header */
+.app-header{
+	display:flex;
+	align-items:center;
+	justify-content:space-between;
+	gap:12px;
+}
+.app-header h1{
+	margin:0;
+	font-size:1.4rem;
+	font-weight:700;
+}
+.app-header .domain{font-weight:500;color:var(--muted);font-size:0.9rem;margin-left:8px}
+.header-controls{display:flex;gap:8px;align-items:center}
+
+/* theme toggle small styling */
+#themeToggle{display:inline-flex;align-items:center;gap:8px}
+#themeToggle #themeIcon{font-size:1.05rem;line-height:1}
+#themeToggle #themeLabel{font-size:0.92rem}
+
+/* card */
+.chat-panel{
+	background:var(--card-bg);
+	border-radius:var(--radius);
+	box-shadow:var(--shadow);
+	padding:18px;
+	min-height:460px;
+	display:flex;
+	flex-direction:column;
+	position:relative;
+	overflow:hidden;
+}
+
+/* messages list */
+.messages{
+	list-style:none;
+	margin:0;
+	padding:8px;
+	display:flex;
+	flex-direction:column;
+	gap:12px;
+	overflow:auto;
+	flex:1 1 auto;
+	scroll-behavior:smooth;
+}
+
+/* message bubbles */
+.msg{
+	max-width:76%;
+	padding:12px 14px;
+	border-radius:14px;
+	box-shadow:0 2px 6px rgba(16,24,40,0.04);
+	transform-origin:left center;
+	animation:pop .14s ease;
+}
+.msg.me{
+	align-self:flex-end;
+	background:var(--msg-me);
+	color:#fff;
+	border-bottom-right-radius:6px;
+}
+.msg.bot{
+	align-self:flex-start;
+	background:var(--msg-bot);
+	color:var(--text);
+	border-bottom-left-radius:6px;
+}
+
+/* meta row */
+.meta{font-size:0.78rem;color:var(--muted);margin-top:6px;display:flex;gap:8px;align-items:center}
+
+/* composer */
+.composer{
+	margin-top:12px;
+	display:flex;
+	gap:10px;
+	align-items:center;
+}
+.input{
+	flex:1 1 auto;
+	padding:12px 14px;
+	border-radius:10px;
+	border:1px solid var(--input-border);
+	background:var(--input-bg);
+	color:var(--text);
+	font-size:0.95rem;
+	outline:none;
+}
+.input:focus{box-shadow:0 6px 18px rgba(37,99,235,0.08);border-color:rgba(37,99,235,0.32)}
+.btn{padding:8px 12px;border-radius:8px;border:0;background:transparent;cursor:pointer}
+.btn.small{padding:6px 8px;font-size:.85rem}
+.btn.primary{background:var(--accent);color:#fff;box-shadow:0 8px 18px rgba(37,99,235,0.12)}
+.btn:active{transform:translateY(1px)}
+
+/* typing indicator */
+.typing{
+	display:flex;gap:6px;align-items:center;margin-left:8px;margin-bottom:6px;height:28px;visibility:hidden;opacity:0;
+	transition:opacity .16s ease, transform .16s ease;
+}
+.typing.show{visibility:visible;opacity:1;transform:translateY(0)}
+.typing .dot{
+	width:8px;height:8px;border-radius:50%;background:#cbd5e1;display:inline-block;animation:bl 1s infinite;
+}
+.typing .dot:nth-child(2){animation-delay:.12s}
+.typing .dot:nth-child(3){animation-delay:.24s}
+@keyframes bl{0%{transform:translateY(0)}50%{transform:translateY(-6px)}100%{transform:translateY(0)}}
+
+/* modal */
+.modal{
+	position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(3,6,12,0.35);backdrop-filter:blur(2px);visibility:hidden;opacity:0;transition:opacity .12s ease;
+}
+.modal[aria-hidden="false"]{visibility:visible;opacity:1}
+.modal-content{
+	background:var(--card);padding:18px;border-radius:10px;min-width:320px;box-shadow:var(--shadow)
+}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:12px}
+
+/* little animation */
+@keyframes pop{from{transform:translateY(6px) scale(.995);opacity:0} to{transform:none;opacity:1}}

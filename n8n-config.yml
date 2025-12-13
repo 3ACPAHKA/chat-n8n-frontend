@@ -1,0 +1,7 @@
+tunnel: b81693ba-7c3e-4b8d-9260-5b84ee2f9548
+credentials-file: C:\Users\tytit\.cloudflared\b81693ba-7c3e-4b8d-9260-5b84ee2f9548.json
+
+ingress:
+  - hostname: n8n.mup.me
+    service: http://localhost:443
+  - service: http_status:404

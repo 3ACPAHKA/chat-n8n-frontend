@@ -1,0 +1,7 @@
+tunnel: 52c25962-6826-44ad-b172-7460fd4a1c6b
+credentials-file: C:\Users\tytit\.cloudflared\52c25962-6826-44ad-b172-7460fd4a1c6b.json
+
+ingress:
+  - hostname: chat.mup.me
+    service: http://127.0.0.1:3000
+  - service: http_status:404
