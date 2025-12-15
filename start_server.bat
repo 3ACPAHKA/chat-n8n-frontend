@@ -1,4 +1,6 @@
 @echo off
+echo Cleaning up old processes (Keeping n8n alive)...
+powershell -NoLogo -NoProfile -ExecutionPolicy Bypass -File "kill_old_processes.ps1"
 echo Starting n8n Project...
 npm start
 pause
