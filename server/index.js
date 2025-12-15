@@ -12,7 +12,7 @@ const staticServer = fork(staticScript);
 
 // 2. Start Cloudflare Tunnels (External Access)
 console.log('Starting Cloudflare Tunnels...');
-const tunnelChat = spawn('cloudflared', ['tunnel', '--config', 'config.yml', 'run'], { stdio: 'ignore' });
+const tunnelChat = spawn('cloudflared', ['tunnel', '--config', 'chat-config.yml', 'run'], { stdio: 'ignore' });
 const tunnelN8N = spawn('cloudflared', ['tunnel', '--config', 'n8n-config.yml', 'run'], { stdio: 'ignore' });
 
 // Error Handling

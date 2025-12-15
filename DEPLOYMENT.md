@@ -35,10 +35,10 @@ npm run dev
 #### Туннель для Чата (`chat.mup.me`)
 
 ```powershell
-cloudflared tunnel --config config.yml run
+cloudflared tunnel --config chat-config.yml run
 ```
 
-- **Config**: `config.yml`
+- **Config**: `chat-config.yml`
 - **Маршрут**: `chat.mup.me` -> `http://127.0.0.1:3000`
 - **UUID**: `52c25962-...`
 
@@ -74,7 +74,7 @@ cloudflared tunnel --config n8n-config.yml run
 
 ## Конфигурация Туннелей
 
-### `config.yml` (Chat)
+### `chat-config.yml` (Chat)
 
 ```yaml
 tunnel: 52c25962-6826-44ad-b172-7460fd4a1c6b
