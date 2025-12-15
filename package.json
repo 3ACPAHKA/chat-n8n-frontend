@@ -1,10 +1,18 @@
 {
   "name": "chat-client",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
-    "dev": "npx serve public --listen 3000",
-    "start": "npx serve public --listen 3000"
+    "dev": "node server/static.js",
+    "start": "node server/index.js",
+    "server": "node server/proxy.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "node-fetch": "^2.6.9"
+  },
+  "devDependencies": {
+    "serve": "^14.2.0"
   },
   "engines": {
     "node": ">=14"

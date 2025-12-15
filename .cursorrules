@@ -1,0 +1,51 @@
+# System Rules for this Project
+
+## 🚨 CRITICAL: AGENT TERMINAL TROUBLESHOOTING GUIDE 🚨
+
+**If you are an Agent and your commands are hanging, timing out, or failing with "Agent execution terminated", READ THIS FIRST.**
+
+### 🛑 The Problem
+On localized Windows systems (e.g., Cyrillic), the default terminals (`cmd.exe`, `powershell.exe`) output text that breaks the Agent's I/O parser:
+1.  **Copyright Banners**: "Корпорация Майкрософт..." (Cyrillic characters crash the parser).
+2.  **Code Page Messages**: "Active code page: 65001" (Unexpected output confuses the handshake).
+3.  **Result**: The Agent hangs indefinitely or crashes immediately after launching a command.
+
+### ✅ The Solution (The "Golden Fix")
+**DO NOT** try to fix `cmd.exe`.
+**DO NOT** try to use legacy `powershell.exe`.
+
+**You MUST use PowerShell 7 (`pwsh`) with silent arguments.**
+
+1.  **Check Prerequisites**: Ensure PowerShell 7 is installed (`pwsh --version`).
+2.  **Configure `.vscode/settings.json` EXACTLY like this:**
+
+```json
+{
+    "terminal.integrated.defaultProfile.windows": "PowerShell",
+    "terminal.integrated.profiles.windows": {
+        "PowerShell": {
+            "path": "pwsh.exe",
+            "args": ["-NoLogo", "-NoProfile"],
+            "icon": "terminal-powershell"
+        }
+    }
+}
+```
+*   `pwsh.exe`: Modern engine with proper UTF-8 support.
+*   `-NoLogo`: Suppresses the copyright banner.
+*   `-NoProfile`: Suppresses profile loading (speed + clean output).
+
+3.  **Reload Window** (Ctrl+Shift+P → "Reload Window") to apply.
+
+### ⚠️ Important UI Limitation
+The Agent's Frontend UI has a bug with **quotes in command strings**.
+*   ❌ **BAD**: `echo "Hello World"` (Causes `querySelector` error in UI).
+*   ✅ **GOOD**: `echo Hello_World` (Safe).
+*   **Workaround**: Use simple, quote-free commands when running from the Agent's "Run Command" tool if you want them to appear in the "Background Processes" menu. Complex logic should go into script files.
+
+---
+
+## Project Run Instructions
+- **Zero-Dependency**: This project runs on native Node.js.
+- **Do not** run `npm install`.
+- **Start command**: `npm start` (Runs Server, Client, and Cloudflare Tunnels).
