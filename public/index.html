@@ -1,37 +1,47 @@
 <!doctype html>
 <html lang="ru">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Chat (chat.mup.me)</title>
-  <link rel="stylesheet" href="./style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <link rel="stylesheet" href="./style.css?v=14" />
 </head>
+
 <body>
   <main class="app">
-    <header class="app-header">
-      <h1>Chat <span class="domain">(chat.mup.me)</span></h1>
-      <div class="header-controls">
-        <button id="themeToggle" class="btn small" aria-pressed="false">
-          <span id="themeIcon" aria-hidden="true">🌕</span>
-          <span id="themeLabel">Светлая</span>
-        </button>
-        <button id="set-secret-btn" class="btn small">Установить секрет</button>
-        <a class="link" target="_blank" href="README.md">README</a>
+    <!-- View 1: Landing Page -->
+    <div id="landing-view" class="view-container active">
+      <div class="landing-content">
+        <button id="start-chat-btn" class="btn-start">Розпочати чат</button>
       </div>
-    </header>
+    </div>
 
-    <section class="chat-panel" aria-live="polite">
-      <ul id="messages" class="messages" role="log" aria-atomic="false"></ul>
+    <!-- View 2: Chat Application (Hidden by default) -->
+    <div id="chat-view">
+      <header class="app-header">
+        <h1>Chat <span class="domain">(chat.mup.me)</span></h1>
+        <div class="header-controls">
+          <!-- Theme toggle removed as requested -->
+          <button id="set-secret-btn" class="btn small">Установить секрет</button>
+          <a class="link" target="_blank" href="README.md">README</a>
+        </div>
+      </header>
 
-      <div id="typing" class="typing" aria-hidden="true">
-        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-      </div>
+      <section class="chat-panel" aria-live="polite">
+        <ul id="messages" class="messages" role="log" aria-atomic="false"></ul>
 
-      <form id="composer" class="composer" autocomplete="off" aria-label="Message composer">
-        <input id="input" class="input" type="text" placeholder="Введите сообщение" aria-label="Введите сообщение" />
-        <button id="send" class="btn primary" type="submit">Отправить</button>
-      </form>
-    </section>
+        <div id="typing" class="typing" aria-hidden="true">
+          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        </div>
+
+        <form id="composer" class="composer" autocomplete="off" aria-label="Message composer">
+          <input id="input" class="input" type="text" placeholder="Введите сообщение" aria-label="Введите сообщение" />
+          <button id="send" class="btn primary" type="submit">Отправить</button>
+        </form>
+      </section>
+    </div>
   </main>
 
   <!-- Secret modal (simple) -->
@@ -47,6 +57,7 @@
     </div>
   </div>
 
-  <script src="./chat.js" defer></script>
+  <script src="./chat.js?v=14" defer></script>
 </body>
+
 </html>

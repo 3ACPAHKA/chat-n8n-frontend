@@ -24,7 +24,8 @@ const MIME_TYPES = {
 };
 
 http.createServer((req, res) => {
-    let filePath = req.url === '/' ? '/index.html' : req.url;
+    const parsedUrl = new URL(req.url, `http://${req.headers.host}`);
+    let filePath = parsedUrl.pathname === '/' ? '/index.html' : parsedUrl.pathname;
     let absPath = path.join(PUBLIC_DIR, filePath);
 
     // Prevent directory traversal
@@ -37,8 +38,11 @@ http.createServer((req, res) => {
     const extname = String(path.extname(absPath)).toLowerCase();
     const contentType = MIME_TYPES[extname] || 'application/octet-stream';
 
+    console.log(`Requested: ${req.url} -> Parsed: ${filePath} -> Abs: ${absPath}`);
+
     fs.readFile(absPath, (error, content) => {
         if (error) {
+            console.error(`Error reading ${absPath}: ${error.code}`);
             if (error.code == 'ENOENT') {
                 res.writeHead(404);
                 res.end('Not Found');

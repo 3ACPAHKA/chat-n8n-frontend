@@ -15,30 +15,36 @@
   const saveSecretBtn = $('save-secret');
   const cancelSecretBtn = $('cancel-secret');
 
-  // --- Theme Toggle ---
-  const themeToggleBtn = document.getElementById('themeToggle');
-  const themeIcon = document.getElementById('themeIcon');
-  const themeLabel = document.getElementById('themeLabel');
+  // DOM elements (already defined above)
+  const landingView = document.getElementById('landing-view');
+  const chatView = document.getElementById('chat-view');
+  const startBtn = document.getElementById('start-chat-btn');
 
-  // helper to apply UI for theme button
-  function applyThemeUI(isDark){
-    if(!themeToggleBtn) return;
-    themeToggleBtn.setAttribute('aria-pressed', String(!!isDark));
-    if(themeIcon) themeIcon.textContent = isDark ? '🌑' : '🌕';
-    if(themeLabel) themeLabel.textContent = isDark ? 'Тёмная' : 'Светлая';
+  // --- View Switching ---
+  if (startBtn) {
+    startBtn.addEventListener('click', () => {
+      // Hide landing, show chat
+      landingView.classList.remove('active');
+      landingView.style.display = 'none';
+
+      chatView.classList.add('active');
+
+      // Auto-focus input
+      setTimeout(() => input.focus(), 100);
+
+      // Render greeting if empty
+      if (messages.children.length === 0) {
+        renderMessage({ role: 'bot', text: 'Чат готов. Напишите что-нибудь.' });
+      }
+    });
   }
 
-  // load saved theme (default: light)
-  const savedTheme = localStorage.getItem('theme') || 'light';
-  const isDarkStart = savedTheme === 'dark';
-  document.body.classList.toggle('dark', isDarkStart);
-  applyThemeUI(isDarkStart);
-
-  if (themeToggleBtn) {
-    themeToggleBtn.addEventListener('click', () => {
-      const isDark = document.body.classList.toggle('dark');
-      localStorage.setItem('theme', isDark ? 'dark' : 'light');
-      applyThemeUI(isDark);
+  // --- Secret Management ---
+  if (setSecretBtn) {
+    setSecretBtn.addEventListener('click', () => {
+      secretInput.value = localStorage.getItem('WEBHOOK_SECRET') || '';
+      secretModal.setAttribute('aria-hidden', 'false');
+      secretInput.focus();
     });
   }
 
@@ -46,8 +52,9 @@
   function renderMessage({ role = 'bot', text = '', ts = new Date() }) {
     const li = document.createElement('li');
     li.className = 'msg ' + (role === 'me' ? 'me' : 'bot');
+    const contentHtml = (role === 'me') ? escapeHtml(text) : marked.parse(text);
     li.innerHTML = `
-      <div class="text">${escapeHtml(text)}</div>
+      <div class="text">${contentHtml}</div>
       <div class="meta">${formatTime(ts)}</div>
     `;
     messages.appendChild(li);
@@ -118,7 +125,7 @@
         // try to parse error body if any
         const txt = await res.text();
         console.error('Server error', res.status, txt);
-        renderMessage({ role: 'bot', text: `Ошибка сервера: ${res.status}` });
+        renderMessage({ role: 'bot', text: `Ошибка сервера: ${res.status} ` });
         return;
       }
       const data = await res.json().catch(() => ({}));
@@ -170,10 +177,7 @@
   });
 
   // initial greeting / state
-  window.addEventListener('load', () => {
-    // small welcome message
-    renderMessage({ role: 'bot', text: 'Чат готов — введите сообщение и нажмите Отправить.' });
-  });
+  // window load listener removed (logic moved to start button)
 
   // expose for debugging
   window.__chat_debug = { sendMessage, renderMessage, getSecret };
