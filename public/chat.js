@@ -128,15 +128,14 @@
         renderMessage({ role: 'bot', text: `Ошибка сервера: ${res.status} ` });
         return;
       }
-      const data = await res.json().catch(() => ({}));
-      // expect { reply: "..." }
-      if (data && (data.reply || data.reply === '')) {
-        renderMessage({ role: 'bot', text: data.reply, ts: new Date() });
-      } else {
-        // fallback: pretty-print whole response
-        const txt = JSON.stringify(data);
-        renderMessage({ role: 'bot', text: txt });
-      }
+      const text = await res.text();
+
+      // пустой ответ тоже допустим
+      renderMessage({
+        role: 'bot',
+        text: text || '',
+        ts: new Date(),
+      });
     } catch (err) {
       // network / CORS / other
       console.error('Fetch failed', err);
@@ -178,6 +177,48 @@
 
   // initial greeting / state
   // window load listener removed (logic moved to start button)
+
+  // Copy on click
+  messages.addEventListener('click', async (e) => {
+    const msgEl = e.target.closest('.msg');
+    if (!msgEl) return;
+
+    const textEl = msgEl.querySelector('.text');
+    if (!textEl) return;
+
+    // Get clean text
+    const text = textEl.innerText;
+    const role = msgEl.classList.contains('me') ? 'me' : 'bot';
+
+    try {
+      await navigator.clipboard.writeText(text);
+      showToast(text, role);
+    } catch (err) {
+      console.error('Failed to copy', err);
+    }
+  });
+
+  // Dynamic Toast
+  function showToast(text, role) {
+    let toast = document.getElementById('toast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'toast';
+      document.body.appendChild(toast);
+    }
+
+    // Truncate long text for the toast preview
+    const display = text.length > 60 ? text.substring(0, 60) + '...' : text;
+
+    toast.textContent = display;
+    // Apply visibility class AND role class
+    toast.className = 'show ' + role;
+
+    // Reset after 2s
+    setTimeout(() => {
+      toast.classList.remove('show');
+    }, 2000);
+  }
 
   // expose for debugging
   window.__chat_debug = { sendMessage, renderMessage, getSecret };

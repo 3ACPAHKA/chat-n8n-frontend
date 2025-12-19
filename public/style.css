@@ -208,6 +208,66 @@ body {
 	border-bottom-left-radius: 6px;
 }
 
+/* Copy interaction */
+.msg {
+	cursor: pointer;
+	transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.msg:active {
+	transform: scale(0.98);
+}
+
+.msg:hover {
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Toast Notification */
+/* Toast Notification */
+#toast {
+	visibility: hidden;
+	min-width: 250px;
+	max-width: 80%;
+	/* prevent overflow */
+	background-color: #333;
+	/* fallback */
+	color: #fff;
+	text-align: center;
+	border-radius: 50px;
+	padding: 12px 24px;
+	/* more padding for text */
+	position: fixed;
+	z-index: 1000;
+	left: 50%;
+	bottom: 30px;
+	transform: translateX(-50%);
+	font-size: 0.95rem;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+	opacity: 0;
+	transition: opacity 0.3s, bottom 0.3s;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+#toast.show {
+	visibility: visible;
+	opacity: 1;
+	bottom: 50px;
+}
+
+/* Match toast color to message source */
+#toast.me {
+	background-color: var(--msg-me);
+	color: #fff;
+}
+
+#toast.bot {
+	background-color: var(--msg-bot);
+	color: #fff;
+	/* better contrast on grey than var(--text) */
+}
+
 /* meta row */
 .meta {
 	font-size: 0.78rem;
@@ -229,8 +289,10 @@ body {
 
 .input {
 	flex: 1 1 auto;
-	padding: 12px 14px;
-	border-radius: 10px;
+	/* Input matching button height */
+	height: 48px;
+	padding: 0 16px;
+	border-radius: 12px;
 	border: 1px solid var(--input-border);
 	background: var(--input-bg);
 	color: var(--text);
@@ -256,14 +318,47 @@ body {
 	font-size: .85rem
 }
 
+/* Send Button (3D Glassy Style) */
 .btn.primary {
-	background: var(--accent);
-	color: #fff;
-	box-shadow: 0 8px 18px rgba(37, 99, 235, 0.12)
+	/* Size & Shape */
+	width: 80px;
+	/* specific width for the icon-less button */
+	height: 48px;
+	/* match input height approx */
+	border-radius: 12px;
+	border: 0;
+	cursor: pointer;
+
+	/* Glassy/3D Gradient */
+	background: linear-gradient(180deg, #60a5fa 0%, #2563eb 100%);
+
+	/* Effects */
+	box-shadow:
+		0 4px 6px rgba(0, 0, 0, 0.2),
+		/* drop shadow */
+		0 2px 4px rgba(37, 99, 235, 0.3),
+		/* glow */
+		inset 0 1px 0 rgba(255, 255, 255, 0.3),
+		/* top highlight */
+		inset 0 -2px 0 rgba(0, 0, 0, 0.1);
+	/* bottom shade */
+
+	transition: all 0.1s ease;
+	position: relative;
+	flex-shrink: 0;
 }
 
-.btn:active {
-	transform: translateY(1px)
+.btn.primary:hover {
+	transform: translateY(-1px);
+	background: linear-gradient(180deg, #93c5fd 0%, #3b82f6 100%);
+	box-shadow:
+		0 6px 12px rgba(37, 99, 235, 0.4),
+		inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.btn.primary:active {
+	transform: translateY(1px);
+	box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
 }
 
 /* typing indicator */
